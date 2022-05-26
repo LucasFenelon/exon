@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core';
 import Head from 'next/head';
-
 import TopBar from './TopBar';
 import NavBar from './NavBar';
 import Menu from './Menu';
