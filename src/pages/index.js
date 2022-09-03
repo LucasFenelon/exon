@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  logoGrid: {
+    marginTop: '0px',
+  },
   logoImg: {
     cursor: 'pointer',
     height: '250px',
@@ -44,6 +47,7 @@ export default function Home() {
         //columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         columns={{ xs: 1, sm: 8, md: 12, lg: 16, xl: 20 }}
         height="100%"
+        className={classes.logoGrid}
       >
         <Grid sm={4} md={8} lg={12} xl={16} style={{ display: 'flex' }}>
           <Box
@@ -59,7 +63,7 @@ export default function Home() {
               backgroundSize: 'cover',
             }}
           >
-            <img src="/logo_exon.svg" alt="logo" className={classes.logoImg} />
+            <img src="/logo_exon.svg" alt="logo" />
           </Box>
         </Grid>
         <Grid
