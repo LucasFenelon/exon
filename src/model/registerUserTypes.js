@@ -1,5 +1,7 @@
-import { Sequelize } from 'sequelize';
-import database from 'src/config/db';
+const Sequelize = require('sequelize');
+const database = require('../config/db');
+// import { Sequelize } from 'sequelize';
+// import database from 'src/config/db';
 
 const RegisterUserTypes = database.define(
   'UserTypes',

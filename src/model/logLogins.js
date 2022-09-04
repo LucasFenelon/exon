@@ -1,7 +1,9 @@
-import { Sequelize } from 'sequelize';
-import { bcrypt } from 'bcrypt';
-import database from 'src/config/db';
-import RegisterUsers from 'src/model/registerUsers';
+const Sequelize = require('sequelize');
+const database = require('../config/db');
+const RegisterUsers = require('./registerUsers');
+// import { Sequelize } from 'sequelize';
+// import database from 'src/config/db';
+// import RegisterUsers from 'src/model/registerUsers';
 
 const LogLogins = database.define(
   'Logins',
@@ -35,7 +37,7 @@ const LogLogins = database.define(
   },
 );
 
-RegisterUsers.hasMany(RegisterPasswords, { foreignKey: 'userId' });
-RegisterPasswords.belongsTo(RegisterUsers, { foreignKey: 'userId' });
+RegisterUsers.hasMany(LogLogins, { foreignKey: 'userId' });
+LogLogins.belongsTo(RegisterUsers, { foreignKey: 'userId' });
 
 module.exports = LogLogins;

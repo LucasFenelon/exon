@@ -1,6 +1,9 @@
-import { Sequelize } from 'sequelize';
-import database from 'src/config/db';
-import RegisterUserTypes from 'src/model/registerUserTypes';
+const Sequelize = require('sequelize');
+const database = require('../config/db');
+const RegisterUserTypes = require('./registerUserTypes');
+// import { Sequelize } from 'sequelize';
+// import database from 'src/config/db';
+// import RegisterUserTypes from 'src/model/registerUserTypes';
 
 const RegisterUsers = database.define(
   'Users',

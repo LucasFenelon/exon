@@ -1,7 +1,11 @@
-import { Sequelize } from 'sequelize';
-import { bcrypt } from 'bcrypt';
-import database from 'src/config/db';
-import RegisterUsers from 'src/model/registerUsers';
+const Sequelize = require('sequelize');
+const { bcrypt }  = require('bcrypt');
+const database = require('../config/db');
+const RegisterUsers = require('./registerUsers');
+// import { Sequelize } from 'sequelize';
+// import { bcrypt } from 'bcrypt';
+// import database from 'src/config/db';
+// import RegisterUsers from 'src/model/registerUsers';
 
 const RegisterPasswords = database.define(
   'Passwords',
