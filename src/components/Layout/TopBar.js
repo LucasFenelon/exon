@@ -1,14 +1,16 @@
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { AccountContext } from 'src/components/ExonAccounts';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     boxShadow: 'none',
-    zIndex: 0,
+    zIndex: '-1',
     backgroundColor: '#187EDC',
   },
   toolbar: {
@@ -31,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 function TopBar() {
   const classes = useStyles();
+  const { logout } = useContext(AccountContext);
+
   return (
     <AppBar className={classes.root} color="primary">
       <Toolbar className={classes.toolbar}>
@@ -40,9 +44,10 @@ function TopBar() {
         <Box className={classes.logo}>
           <img src="/logo_exon.svg" alt="logo" className={classes.logoImg} />
         </Box>
-        {/* <Box display="flex" alignItems="center">
-          <AccountCircleIcon fontSize="large" color="primary" />
-        </Box> */}
+        <Box display="flex" alignItems="center">
+          <AccountCircleIcon fontSize="large" color="white" />
+          {/* <a onClick={logout}> LogOut </a> */}
+        </Box>
       </Toolbar>
     </AppBar>
   );

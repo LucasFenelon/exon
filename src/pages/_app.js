@@ -2,6 +2,7 @@ import * as React from 'react';
 import Head from 'next/head';
 import CssBaseline from '@mui/material/CssBaseline';
 import ExonThemeProvider from 'src/components/ExonThemeProvider';
+import { Account } from 'src/components/ExonAccounts';
 import { SettingsProvider } from 'src/contexts/SettingsContext';
 
 export default function MyApp(props) {
@@ -32,8 +33,10 @@ export default function MyApp(props) {
         </Head>
         <SettingsProvider>
           <ExonThemeProvider>
-            <CssBaseline />
-            <Component {...pageProps} />
+            <Account>
+              <CssBaseline />
+              <Component {...pageProps} />
+            </Account>
           </ExonThemeProvider>
         </SettingsProvider>
       </React.Fragment>

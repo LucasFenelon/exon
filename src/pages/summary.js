@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { makeStyles } from '@material-ui/core';
@@ -13,6 +13,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import { Typography } from '@material-ui/core';
+import { AccountContext } from 'src/components/ExonAccounts';
 
 const useStyles = makeStyles((theme) => ({
   boxGrid: {
@@ -163,67 +164,90 @@ export const optionsSummeryChart = {
 
 function Summary() {
   const classes = useStyles();
+  const [status, setStatus] = useState(false);
+  const { getSession, logout, sessionLost } = useContext(AccountContext);
+
+  useEffect(() => {
+    getSession()
+      .then((session) => {
+        console.log('Session:', session);
+        setStatus(true);
+      })
+      .catch(() => {
+        console.error('Failed to login!');
+        sessionLost;
+        setStatus(false);
+        Router.push('/');
+      });
+  }, []);
 
   return (
-    <Layout title="Summary">
-      <Box sx={{ flexGrow: 1 }} className={classes.boxGrid}>
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          rowSpacing={1}
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          columns={{ xs: 1, sm: 12, lg: 14 }}
-        >
-          <Grid item xs={1} sm={8}>
-            {/* <Paper square elevation={6} sx={{ width: '100%', mb: 2 }} className={classes.paperLayout}> */}
-            <Doughnut
-              data={dataSummaryChart}
-              options={optionsSummeryChart}
-              plugins={[imageChartCenter]}
-            />
-            {/* </Paper> */}
-          </Grid>
-          <Grid
-            item
-            xs={1}
-            sm={4}
-            lg={6}
-            style={{ width: '100%', textAlign: 'center' }}
-          >
-            <Box sx={{ flexGrow: 1 }} style={{ display: 'inline-flex' }}>
-              <Card sx={{ maxWidth: 345 }}>
-                <CardActionArea style={{ display: 'block' }}>
-                  <CardMedia
-                    style={{ minHeight: '400px' }}
-                    component="img"
-                    height="140"
-                    image="/thumbs/sample/person_summary.jpeg"
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Pedro Santana Castro
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Bem Vindo Pedro Castro Seu DNA pode revelar uma série de
-                      informações importantes sobre você, descubra mais no menu
-                      ao lado, caso queira compartilhe no botão abaixo.
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    Share
-                  </Button>
-                </CardActions>
-              </Card>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-    </Layout>
+    <div>
+      {status ? (
+        <Layout title="Summary">
+          <Box sx={{ flexGrow: 1 }} className={classes.boxGrid}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              columns={{ xs: 1, sm: 12, lg: 14 }}
+            >
+              <Grid item xs={1} sm={8}>
+                {/* <Paper square elevation={6} sx={{ width: '100%', mb: 2 }} className={classes.paperLayout}> */}
+                <Doughnut
+                  data={dataSummaryChart}
+                  options={optionsSummeryChart}
+                  plugins={[imageChartCenter]}
+                />
+                {/* </Paper> */}
+              </Grid>
+              <Grid
+                item
+                xs={1}
+                sm={4}
+                lg={6}
+                style={{ width: '100%', textAlign: 'center' }}
+              >
+                <Box sx={{ flexGrow: 1 }} style={{ display: 'inline-flex' }}>
+                  <Card sx={{ maxWidth: 345 }}>
+                    <CardActionArea style={{ display: 'block' }}>
+                      <CardMedia
+                        style={{ minHeight: '400px' }}
+                        component="img"
+                        height="140"
+                        image="/thumbs/sample/person_summary.jpeg"
+                        alt="green iguana"
+                      />
+                      <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                          Pedro Santana Castro
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Bem Vindo Pedro Castro Seu DNA pode revelar uma série
+                          de informações importantes sobre você, descubra mais
+                          no menu ao lado, caso queira compartilhe no botão
+                          abaixo.
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                    <CardActions>
+                      <Button size="small" color="primary">
+                        Share
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+        </Layout>
+      ) : (
+        sessionLost
+      )}
+    </div>
   );
 }
 

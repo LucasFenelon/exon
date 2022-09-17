@@ -46,7 +46,7 @@ function Layout({ children, title }) {
       <div className={classes.root}>
         <TopBar />
         <NavBar />
-        {/* <Menu /> */}
+        <Menu />
         <div className={classes.wrapper}>
           <div className={classes.contentContainer}>
             <div className={classes.content}>{children}</div>

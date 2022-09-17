@@ -29,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
   menuPapper: {
     'min-width': '120px',
     'border-radius': '0px',
-    backgroundColor: '#04fbbc',
+    backgroundColor: '#187EDC',
+    zIndex: '1',
   },
   menuList: {
     display: 'grid',
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   menuItem: {
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
-    color: '#634cfb',
+    color: 'white',
     cursor: 'pointer',
   },
 }));

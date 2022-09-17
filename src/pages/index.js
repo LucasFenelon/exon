@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Typography, TextField } from '@material-ui/core';
 import { Button } from '@material-ui/core';
@@ -6,6 +6,9 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Router from 'next/router';
 import AddIcon from '@mui/icons-material/Add';
+import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import UserPool from './usersPool';
+import { AccountContext } from 'src/components/ExonAccounts';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +34,57 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { authenticate } = useContext(AccountContext);
+
+  const onSubmitLogin = (event) => {
+    event.preventDefault();
+
+    authenticate(email, password)
+      .then((data) => {
+        console.log('Logged in!', data);
+        Router.push('/summary');
+      })
+      .catch((err) => {
+        console.error('Failed to login!', err);
+      });
+
+    // const user = new CognitoUser({
+    //   Username: email,
+    //   Pool: UserPool,
+    // });
+
+    // const authDetails = new AuthenticationDetails({
+    //   Username: email,
+    //   Password: password,
+    // });
+
+    // user.authenticateUser(authDetails, {
+    //   onSuccess: (data) => {
+    //     console.log('onSuccess:', data);
+    //     // Router.push('/summary');
+    //   },
+
+    //   onFailure: (err) => {
+    //     console.error('onFailure:', err);
+    //   },
+
+    //   newPasswordRequired: (data) => {
+    //     console.log('newPasswordRequired:', data);
+    //   },
+    // });
+  };
+
+  const onSubmitSignUp = (event) => {
+    event.preventDefault();
+
+    // UserPool.signUp(email, password, [], null, (err, data) => {
+    //   if (err) console.error(err);
+    //   console.log(data);
+    Router.push('/signup');
+    // });
+  };
 
   return (
     <Box
@@ -75,7 +129,11 @@ export default function Home() {
           sm={4}
           style={{ display: 'flex' }}
         >
-          <Box width="100%" textAlign="center" style={{ paddingRight: '28px' }}>
+          <Box
+            width="100%"
+            textAlign="center"
+            style={{ paddingRight: '14px', paddingLeft: '14px' }}
+          >
             <Typography
               variant="h4"
               style={{ textAlign: 'center' }}
@@ -97,6 +155,8 @@ export default function Home() {
               classes={{
                 root: classes.root,
               }}
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
             />
             <TextField
               label="Password"
@@ -106,6 +166,8 @@ export default function Home() {
               classes={{
                 root: classes.root,
               }}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
             />
             <Box
               style={{ marginTop: '20px', width: '100%' }}
@@ -131,9 +193,7 @@ export default function Home() {
                 variant="contained"
                 color="primary"
                 style={{ marginRight: '20px' }}
-                onClick={() => {
-                  Router.push('/summary');
-                }}
+                onClick={onSubmitLogin}
               >
                 LOGIN
               </Button>
@@ -142,6 +202,7 @@ export default function Home() {
                 color="primary"
                 style={{ marginRight: '20px' }}
                 startIcon={<AddIcon />}
+                onClick={onSubmitSignUp}
               >
                 CRIAR CONTA
               </Button>
