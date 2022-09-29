@@ -13,7 +13,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Router from 'next/router';
-import UserPool from '../pages/userspool';
+import UserPool from './userspool';
 import ExonSignUp from 'src/components/ExonSignUp';
 
 const useStyles = makeStyles((theme) => ({
