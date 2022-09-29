@@ -1,12 +1,11 @@
 import React, { createContext } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
-import Pool from 'src/pages/usersPool';
+import Pool from 'src/pages/userspool';
 import Router from 'next/router';
-import { Route } from '@mui/icons-material';
 
 const AccountContext = createContext();
 
-const Account = (props) => {
+const ExonAccounts = (props) => {
   const getSession = async () =>
     await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser();
@@ -15,34 +14,47 @@ const Account = (props) => {
           if (err) {
             reject();
           } else {
-            resolve(session);
-            // const attributes = await new Promise((resolve, reject) => {
-            //   user.getUserAttributes((err, attributes) => {
-            //     if (err) {
-            //       reject(err);
-            //     } else {
-            //       const results = {};
+            const attributes = await new Promise((resolve, reject) => {
+              user.getUserAttributes((err, attributes) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  const results = {};
 
-            //       for (let attribute of attributes) {
-            //         const { Name, Value } = attribute;
-            //         results[Name] = Value;
-            //       }
+                  for (let attribute of attributes) {
+                    const { Name, Value } = attribute;
+                    results[Name] = Value;
+                  }
 
-            //       resolve(results);
-            //     }
-            //   });
-            // });
+                  resolve(results);
+                }
+              });
+            });
 
-            // resolve({
-            //   user,
-            //   ...session,
-            //   ...attributes,
-            // });
+            resolve({
+              user,
+              ...session,
+              ...attributes,
+            });
           }
         });
       } else {
         reject();
       }
+    });
+
+  const confirm = async (Username, Verification) =>
+    await new Promise((success, error) => {
+      const user = new CognitoUser({ Username, Pool });
+      const callback = (err, result) => {
+        if (err) {
+          error(err);
+          return;
+        }
+        success(result);
+      };
+
+      user.confirmRegistration(Verification, true, callback);
     });
 
   const authenticate = async (Username, Password) =>
@@ -72,16 +84,18 @@ const Account = (props) => {
     const user = Pool.getCurrentUser();
     if (user) {
       user.signOut();
+      Router.push('/');
     }
   };
 
   const sessionLost = () => {
-    Router.push('/index');
+    Router.push('/');
   };
 
   return (
     <AccountContext.Provider
       value={{
+        confirm,
         authenticate,
         getSession,
         logout,
@@ -93,4 +107,4 @@ const Account = (props) => {
   );
 };
 
-export { Account, AccountContext };
+export { ExonAccounts, AccountContext };

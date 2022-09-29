@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Fade from '@mui/material/Fade';
@@ -7,8 +7,8 @@ import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Router from 'next/router';
+import { AccountContext } from 'src/components/ExonAccounts';
 
 const useStyles = makeStyles((theme) => ({
   mobileDrawer: {
@@ -44,13 +44,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MenuListComposition() {
+function MenuListComposition({ menuToolbar }) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
+  const anchorRef = useRef(null);
+  const { logout } = useContext(AccountContext);
+  var [open, setOpen] = useState({ menuToolbar });
+  open = menuToolbar;
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleProfile = (event) => {
+    Router.push('/profile');
+    handleClose(event);
+  };
+
+  const handleAccount = (event) => {
+    Router.push('/account');
+    handleClose(event);
   };
 
   const handleClose = (event) => {
@@ -73,7 +85,12 @@ function MenuListComposition() {
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
+    if (
+      anchorRef.current != null &&
+      prevOpen.current === true &&
+      open === false
+    ) {
+      console.log(anchorRef.current);
       anchorRef.current.focus();
     }
 
@@ -82,16 +99,6 @@ function MenuListComposition() {
 
   return (
     <Stack direction="row-reverse" spacing={3} className={classes.menuNav}>
-      <Box
-        ref={anchorRef}
-        id="composition-button"
-        display="flex"
-        alignItems="center"
-        onClick={handleToggle}
-        className={classes.menuProfile}
-      >
-        <AccountCircleIcon fontSize="large" color="primary" />
-      </Box>
       <Popper
         open={open}
         anchorEl={anchorRef.current}
@@ -99,6 +106,7 @@ function MenuListComposition() {
         placement="bottom-start"
         transition
         disablePortal
+        style={{ zIndex: '1', marginTop: '56px', left: 'none' }}
       >
         {({ TransitionProps, placement }) => (
           <Fade
@@ -118,13 +126,13 @@ function MenuListComposition() {
                 >
                   <MenuItem
                     classes={{ root: classes.menuItem }}
-                    onClick={handleClose}
+                    onClick={handleProfile}
                   >
                     Profile
                   </MenuItem>
                   <MenuItem
                     classes={{ root: classes.menuItem }}
-                    onClick={handleClose}
+                    onClick={handleAccount}
                   >
                     My account
                   </MenuItem>
@@ -132,7 +140,7 @@ function MenuListComposition() {
                     classes={{ root: classes.menuItem }}
                     onClick={handleClose}
                   >
-                    Logout
+                    <a onClick={logout}> LogOut </a>
                   </MenuItem>
                 </MenuList>
               </ClickAwayListener>

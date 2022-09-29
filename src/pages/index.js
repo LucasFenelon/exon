@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Typography, TextField } from '@material-ui/core';
 import { Button } from '@material-ui/core';
@@ -6,8 +6,6 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Router from 'next/router';
 import AddIcon from '@mui/icons-material/Add';
-import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
-import UserPool from './usersPool';
 import { AccountContext } from 'src/components/ExonAccounts';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,6 +35,10 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { authenticate } = useContext(AccountContext);
+
+  useEffect(() => {
+    document.body.style.background = 'white';
+  }, []);
 
   const onSubmitLogin = (event) => {
     event.preventDefault();
@@ -76,14 +78,21 @@ export default function Home() {
     // });
   };
 
+  const handleKeyDownUser = (event) => {
+    if (event.key === 'Enter') {
+      document.getElementById('_password').focus();
+    }
+  };
+
+  const handleKeyDownPassword = (event) => {
+    if (event.key === 'Enter') {
+      onSubmitLogin(event);
+    }
+  };
+
   const onSubmitSignUp = (event) => {
     event.preventDefault();
-
-    // UserPool.signUp(email, password, [], null, (err, data) => {
-    //   if (err) console.error(err);
-    //   console.log(data);
     Router.push('/signup');
-    // });
   };
 
   return (
@@ -103,7 +112,14 @@ export default function Home() {
         height="100%"
         className={classes.logoGrid}
       >
-        <Grid sm={4} md={8} lg={12} xl={16} style={{ display: 'flex' }}>
+        <Grid
+          item
+          sm={4}
+          md={8}
+          lg={12}
+          xl={16}
+          style={{ display: 'flex', paddingTop: '0px' }}
+        >
           <Box
             display={{ xs: 'none', sm: 'flex' }}
             width="100%"
@@ -149,6 +165,7 @@ export default function Home() {
               com a Google, incluindo resultados genéticos
             </Typography>
             <TextField
+              id="_user"
               label="User"
               variant="outlined"
               style={{ marginTop: '20px', width: '100%' }}
@@ -157,8 +174,10 @@ export default function Home() {
               }}
               value={email}
               onChange={(event) => setEmail(event.target.value)}
+              onKeyDown={handleKeyDownUser}
             />
             <TextField
+              id="_password"
               label="Password"
               type="password"
               variant="outlined"
@@ -168,7 +187,13 @@ export default function Home() {
               }}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              onKeyDown={handleKeyDownPassword}
             />
+            <div style={{ display: 'flex' }}>
+              <a style={{ color: '#187EDC' }} href="/forgot">
+                Esqueci minha senha
+              </a>
+            </div>
             <Box
               style={{ marginTop: '20px', width: '100%' }}
               textAlign="center"
@@ -178,7 +203,7 @@ export default function Home() {
                 variant="body1"
                 style={{ textAlign: 'center', color: '#79747E' }}
               >
-                Eu concordo com{' '}
+                Saiba mais ...{' '}
                 <a style={{ color: '#187EDC' }} href="">
                   Termos & Condições
                 </a>

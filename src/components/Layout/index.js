@@ -1,8 +1,8 @@
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import Head from 'next/head';
 import TopBar from './TopBar';
 import NavBar from './NavBar';
-import Menu from './Menu';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Layout({ children, title }) {
   const classes = useStyles();
+  const [menuToolbar, setMenuToolbar] = useState(false);
+
   return (
     <>
       <Head>
@@ -46,7 +48,6 @@ function Layout({ children, title }) {
       <div className={classes.root}>
         <TopBar />
         <NavBar />
-        <Menu />
         <div className={classes.wrapper}>
           <div className={classes.contentContainer}>
             <div className={classes.content}>{children}</div>
