@@ -6,8 +6,8 @@ import Grid from '@mui/material/Grid';
 import { Button } from '@material-ui/core';
 import { Typography, TextField } from '@material-ui/core';
 import Router from 'next/router';
-import ExonSignUp from 'src/components/ExonSignUp';
-import { AccountContext } from 'src/components/ExonAccounts';
+import ExonSignUp from './src/components/ExonSignUp';
+import { AccountContext } from './src/components/ExonAccounts';
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
