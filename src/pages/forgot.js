@@ -5,9 +5,9 @@ import Grid from '@mui/material/Grid';
 import { Button } from '@material-ui/core';
 import { Typography, TextField } from '@material-ui/core';
 import Router from 'next/router';
-import Pool from 'src/pages/userspool';
+import Pool from './userspool';
 import { CognitoUser } from 'amazon-cognito-identity-js';
-import ExonSignUp from 'src/components/ExonSignUp';
+import ExonSignUp from '../components/ExonSignUp';
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
