@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Head from 'next/head';
 import CssBaseline from '@mui/material/CssBaseline';
-import ExonThemeProvider from '../components/ExonThemeProvider';
-import { ExonAccounts } from '../components/ExonAccounts';
-import { SettingsProvider } from '../contexts/SettingsContext';
+import ExonThemeProvider from 'src/components/ExonThemeProvider';
+import { ExonAccounts } from 'src/components/ExonAccounts';
+import { SettingsProvider } from 'src/contexts/SettingsContext';
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
