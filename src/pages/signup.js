@@ -13,7 +13,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Router from 'next/router';
-import UserPool from './userspool';
+import Pool from './userspool';
 import ExonSignUp from '../components/ExonSignUp';
 
 const useStyles = makeStyles((theme) => ({
@@ -150,7 +150,7 @@ function SignUp() {
     event.preventDefault();
 
     if (email != '' && password == confirmPassword) {
-      UserPool.signUp(email, password, [], null, (err, data) => {
+      Pool.signUp(email, password, [], null, (err, data) => {
         if (err) console.error(err);
         console.log(data);
       });
