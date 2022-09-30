@@ -14,7 +14,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Router from 'next/router';
 import UserPool from './userspool';
-import ExonSignUp from './../components/ExonSignUp';
+import ExonSignUp from '../components/ExonSignUp';
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
