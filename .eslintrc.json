@@ -7,8 +7,8 @@
     "extends": [
         "plugin:react/recommended",
         "standard",
-        "prettier",
-        "prettier/react"
+        "prettier"
+        // "prettier/react"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -18,6 +18,7 @@
         "sourceType": "module"
     },
     "plugins": [
+        // "react",
         "prettier"
     ],
     "rules": {
