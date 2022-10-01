@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
-import Pool from 'src/pages/userspool';
+import UserPool from 'src/pages/userspool';
 import Router from 'next/router';
 
 const AccountContext = createContext();
@@ -8,7 +8,7 @@ const AccountContext = createContext();
 const ExonAccounts = (props) => {
   const getSession = async () =>
     await new Promise((resolve, reject) => {
-      const user = Pool.getCurrentUser();
+      const user = UserPool.getCurrentUser();
       if (user) {
         user.getSession(async (err, session) => {
           if (err) {
@@ -45,7 +45,7 @@ const ExonAccounts = (props) => {
 
   const confirm = async (Username, Verification) =>
     await new Promise((success, error) => {
-      const user = new CognitoUser({ Username, Pool });
+      const user = new CognitoUser({ Username, UserPool });
       const callback = (err, result) => {
         if (err) {
           error(err);
@@ -59,7 +59,7 @@ const ExonAccounts = (props) => {
 
   const authenticate = async (Username, Password) =>
     await new Promise((resolve, reject) => {
-      const user = new CognitoUser({ Username, Pool });
+      const user = new CognitoUser({ Username, UserPool });
       const authDetails = new AuthenticationDetails({ Username, Password });
 
       user.authenticateUser(authDetails, {
@@ -81,7 +81,7 @@ const ExonAccounts = (props) => {
     });
 
   const logout = () => {
-    const user = Pool.getCurrentUser();
+    const user = UserPool.getCurrentUser();
     if (user) {
       user.signOut();
       Router.push('/');
