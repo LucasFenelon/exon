@@ -5,9 +5,8 @@ import Grid from '@mui/material/Grid';
 import { Button } from '@material-ui/core';
 import { Typography, TextField } from '@material-ui/core';
 import Router from 'next/router';
-import Pool from './userspool';
-import { CognitoUser } from 'amazon-cognito-identity-js';
 import ExonSignUp from 'src/components/ExonSignUp';
+import { AccountContext } from 'src/components/ExonAccounts';
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
@@ -40,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Forgot() {
   const classes = useStyles();
+  const { forgot, confirmReset } = useContext(AccountContext);
   const [stage, setStage] = useState(1);
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
@@ -67,18 +67,14 @@ function Forgot() {
   const onSendCode = (event) => {
     event.preventDefault();
 
-    getUser().forgotPassword({
-      onSuccess: (data) => {
-        console.log('onSuccess:', data);
-      },
-      onFailure: (err) => {
-        console.error('onFailure:', err);
-      },
-      inputVerificationCode: (data) => {
-        console.log('Input code:', data);
+    forgot(email)
+      .then((data) => {
+        console.log('Sent!', data);
         setStage(2);
-      },
-    });
+      })
+      .catch((err) => {
+        console.error('Failed!', err);
+      });
   };
 
   const onSubmit = (event) => {
@@ -88,15 +84,14 @@ function Forgot() {
     console.log(confirmPassword);
 
     if (password == confirmPassword) {
-      getUser().confirmPassword(code, password, {
-        onSuccess: (data) => {
-          console.log('onSuccess:', data);
+      confirmReset(code, email, password)
+        .then((data) => {
+          console.log('Confirmed!', data);
           Router.push('/');
-        },
-        onFailure: (err) => {
-          console.error('onFailure:', err);
-        },
-      });
+        })
+        .catch((err) => {
+          console.error('Failed!', err);
+        });
     } else {
       alert('senhas diferentes !');
     }

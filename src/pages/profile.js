@@ -50,8 +50,10 @@ function Profile() {
   const [email, setEmail] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [code, setCode] = useState('');
   const [openSend, setOpenSend] = React.useState(false);
-  const { getSession, authenticate } = useContext(AccountContext);
+  const [openCode, setOpenCode] = React.useState(false);
+  const { getSession, authenticate, confirm } = useContext(AccountContext);
 
   useEffect(() => {
     getSession().then(({ user, email }) => {
@@ -68,22 +70,73 @@ function Profile() {
     setOpenSend(false);
   };
 
+  const handleClickOpenCode = () => {
+    setOpenCode(true);
+  };
+
+  const handleCloseCode = () => {
+    setOpenCode(false);
+  };
+
   const onSubmitChange = (event) => {
     event.preventDefault();
-    console.log(email);
-    console.log(newEmail);
 
     getSession().then(({ user, email }) => {
-      authenticate(email, password).then(() => {
-        const attributes = [
-          new CognitoUserAttribute({ Name: 'email', Value: newEmail }),
-        ];
+      authenticate(email, password)
+        .then(() => {
+          const newAttributesEmail = [
+            new CognitoUserAttribute({ Name: 'email', Value: newEmail }),
+          ];
 
-        user.updateAttributes(attributes, (err, results) => {
-          if (err) console.error(err);
-          console.log(results);
+          const newAttributesEmailVerified = [
+            new CognitoUserAttribute({ Name: 'email_verified', Value: 'true' }),
+          ];
+
+          handleCloseSend();
+          user.updateAttributes(newAttributesEmail, (err, results) => {
+            if (err) {
+              console.error(err);
+            } else {
+              user.updateAttributes(
+                newAttributesEmailVerified,
+                (err, results) => {
+                  if (err) {
+                    console.error(err);
+                  } else {
+                    handleClickOpenCode();
+                  }
+                  console.log(results);
+                },
+              );
+            }
+            console.log(results);
+          });
+        })
+        .catch((err) => {
+          console.error('Failed!', err);
         });
-      });
+    });
+  };
+
+  const onSubmitCode = (event) => {
+    event.preventDefault();
+
+    getSession().then(({ user, email }) => {
+      authenticate(newEmail, password)
+        .then(() => {
+          confirm(newEmail, code)
+            .then((data) => {
+              console.log(results);
+              console.log('User confirmed!', data);
+              handleCloseCode();
+            })
+            .catch((err) => {
+              console.error('Failed to confirm!', err);
+            });
+        })
+        .catch((err) => {
+          console.error('Failed!', err);
+        });
     });
   };
 
@@ -118,6 +171,52 @@ function Profile() {
                 value={newEmail}
                 onChange={(event) => setNewEmail(event.target.value)}
               />
+              <Dialog
+                open={openCode}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleCloseSend}
+              >
+                <DialogTitle>{'Validação'}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Digite o código para alteração do E-mail:
+                  </DialogContentText>
+                  <TextField
+                    id="_code"
+                    label="código"
+                    variant="outlined"
+                    style={{
+                      marginTop: '20px',
+                      width: '100%',
+                    }}
+                    classes={{
+                      root: classes.root,
+                    }}
+                    onChange={(event) => setCode(event.target.value)}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Box
+                    style={{
+                      width: '100%',
+                      padding: '0px 16px 12px 16px',
+                    }}
+                    textAlign="left"
+                    display="flex"
+                  >
+                    <Button
+                      variant="contained"
+                      style={{
+                        marginLeft: '10px',
+                      }}
+                      onClick={onSubmitCode}
+                    >
+                      VALIDAR
+                    </Button>
+                  </Box>
+                </DialogActions>
+              </Dialog>
               <Dialog
                 open={openSend}
                 TransitionComponent={Transition}
