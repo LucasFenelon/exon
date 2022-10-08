@@ -43,6 +43,9 @@ export default function Home() {
   const onSubmitLogin = (event) => {
     event.preventDefault();
 
+    console.log(email)
+    console.log(password)
+
     authenticate(email, password)
       .then((data) => {
         console.log('Logged in!', data);
