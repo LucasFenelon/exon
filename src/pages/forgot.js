@@ -46,7 +46,16 @@ function Forgot() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const collector_url =
+    'http://snowplow-elb-1976030773.us-east-1.elb.amazonaws.com/';
+  newTracker('snowplow_pageview', collector_url, {
+    appId: 'app-test-selfdescribing',
+    plugins: [],
+  });
+
   useEffect(() => {
+    trackPageView(undefined, ['snowplow_pageview']);
+    console.log('passei');
     document.body.style.background = '#187EDC';
   }, []);
 

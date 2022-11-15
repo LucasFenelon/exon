@@ -7,6 +7,19 @@ import Grid from '@mui/material/Grid';
 import Router from 'next/router';
 import AddIcon from '@mui/icons-material/Add';
 import { AccountContext } from 'src/components/ExonAccounts';
+import { newTracker } from '@snowplow/browser-tracker';
+import {
+  trackPageView,
+  trackSelfDescribingEvent,
+} from '@snowplow/browser-tracker';
+
+const collector_url =
+  'http://snowplow-elb-1976030773.us-east-1.elb.amazonaws.com/';
+newTracker('snowplow_pageview', collector_url, {
+  appId: 'app-test-selfdescribing',
+  cookieDomain: 'localhost',
+  plugins: [],
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,17 +47,21 @@ export default function Home() {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  console.log('Aqui');
+  console.log(AccountContext);
+  console.log(useContext(AccountContext));
   const { authenticate } = useContext(AccountContext);
 
   useEffect(() => {
     document.body.style.background = 'white';
+    // trackPageView(undefined, ['snowplow_pageview']);
   }, []);
 
   const onSubmitLogin = (event) => {
     event.preventDefault();
 
-    console.log(email)
-    console.log(password)
+    console.log(email);
+    console.log(password);
 
     authenticate(email, password)
       .then((data) => {

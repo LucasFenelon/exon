@@ -2,6 +2,11 @@ import React, { createContext } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import UserPool from 'src/pages/userspool';
 import Router from 'next/router';
+import { newTracker } from '@snowplow/browser-tracker';
+import {
+  trackPageView,
+  trackSelfDescribingEvent,
+} from '@snowplow/browser-tracker';
 
 const AccountContext = createContext();
 
@@ -102,16 +107,7 @@ const ExonAccounts = (props) => {
 
   const authenticate = async (Username, Password) =>
     await new Promise((resolve, reject) => {
-<<<<<<< HEAD
       const user = new CognitoUser({ Username: Username, Pool: UserPool });
-=======
-      console.log("pass authenticate")
-      console.log(Username)
-      console.log(Password)
-      console.log(UserPool)
-      const user = new CognitoUser({ Username:Username, Pool:UserPool });
-      console.log(user)
->>>>>>> refs/remotes/origin/main
       const authDetails = new AuthenticationDetails({ Username, Password });
 
       user.authenticateUser(authDetails, {
@@ -122,7 +118,7 @@ const ExonAccounts = (props) => {
 
         onFailure: (err) => {
           console.error('onFailure:', err);
-          console.log('login fail !')
+          console.log('login fail !');
           reject(err);
         },
 
