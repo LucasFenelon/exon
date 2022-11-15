@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Router from 'next/router';
-import Link from 'next/link'
+import Link from 'next/link';
 import {
   makeStyles,
   Hidden,
@@ -16,6 +16,7 @@ import {
   Button,
   Icon,
 } from '@material-ui/core';
+// import Drawer from '@mui/material/Drawer';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import ScoreIcon from '@mui/icons-material/Score';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -57,14 +58,25 @@ const useStyles = makeStyles((theme) => ({
 
 const menu = [
   { id: 1, label: 'Sumário', path: '/summary', icon: SummarizeIcon },
-  { id: 2, label: 'Traços de Portador', path: '/bearertraits', icon: AttributionIcon },
+  { id: 1, label: 'Resumo', path: '/resume', icon: SummarizeIcon },
+  {
+    id: 2,
+    label: 'Traços de Portador',
+    path: '/bearertraits',
+    icon: AttributionIcon,
+  },
   { id: 3, label: 'Escores de Risco', path: '/riskscore', icon: ScoreIcon },
-  { id: 4, label: 'Perfil de medicações', path: '/medicalprofile', icon: PersonAddIcon },
+  {
+    id: 4,
+    label: 'Perfil de medicações',
+    path: '/medicalprofile',
+    icon: PersonAddIcon,
+  },
   { id: 5, label: 'Insights', path: '/insights', icon: InsightsIcon },
   { id: 6, label: 'Termos e condições', path: '/terms', icon: GavelIcon },
 ];
 
-function NavBar() {
+function NavBar({ toggleDrawerNav, open }) {
   const classes = useStyles();
   const router = useRouter();
   const isSelected = (item) => {
@@ -111,8 +123,10 @@ function NavBar() {
       <Drawer
         anchor="left"
         classes={{ paper: classes.desktopDrawer }}
-        open
-        variant="persistent"
+        open={open}
+        variant="temporary"
+        onClose={toggleDrawerNav(false)}
+        onOpen={toggleDrawerNav(true)}
       >
         {content}
       </Drawer>

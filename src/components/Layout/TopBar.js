@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AccountContext } from 'src/components/ExonAccounts';
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TopBar() {
+function TopBar({ toggleDrawerNav }) {
   const classes = useStyles();
   const [openMenu, setOpenMenu] = useState(false);
   const { logout } = useContext(AccountContext);
@@ -50,7 +51,7 @@ function TopBar() {
       <AppBar className={classes.root} color="primary">
         <Toolbar className={classes.toolbar}>
           <Box display="flex" alignItems="center">
-            <MenuIcon />
+            <MenuIcon onClick={toggleDrawerNav(true)} />
           </Box>
           <Box className={classes.logo}>
             <img src="/logo_exon.svg" alt="logo" className={classes.logoImg} />

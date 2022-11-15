@@ -8,18 +8,6 @@ import Router from 'next/router';
 import AddIcon from '@mui/icons-material/Add';
 import { AccountContext } from 'src/components/ExonAccounts';
 import { newTracker } from '@snowplow/browser-tracker';
-import {
-  trackPageView,
-  trackSelfDescribingEvent,
-} from '@snowplow/browser-tracker';
-
-const collector_url =
-  'http://snowplow-elb-1976030773.us-east-1.elb.amazonaws.com/';
-newTracker('snowplow_pageview', collector_url, {
-  appId: 'app-test-selfdescribing',
-  cookieDomain: 'localhost',
-  plugins: [],
-});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,31 +59,6 @@ export default function Home() {
       .catch((err) => {
         console.error('Failed to login!', err);
       });
-
-    // const user = new CognitoUser({
-    //   Username: email,
-    //   Pool: UserPool,
-    // });
-
-    // const authDetails = new AuthenticationDetails({
-    //   Username: email,
-    //   Password: password,
-    // });
-
-    // user.authenticateUser(authDetails, {
-    //   onSuccess: (data) => {
-    //     console.log('onSuccess:', data);
-    //     // Router.push('/summary');
-    //   },
-
-    //   onFailure: (err) => {
-    //     console.error('onFailure:', err);
-    //   },
-
-    //   newPasswordRequired: (data) => {
-    //     console.log('newPasswordRequired:', data);
-    //   },
-    // });
   };
 
   const handleKeyDownUser = (event) => {
