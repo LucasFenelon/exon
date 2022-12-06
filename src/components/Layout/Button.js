@@ -42,9 +42,9 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     /*
-    paddingTop: '6px',
-    paddingBottom: '6px',
-    paddingLeft: theme.spacing(3), */
+      paddingTop: '6px',
+      paddingBottom: '6px',
+      paddingLeft: theme.spacing(3), */
   },
   listItemText: {
     fontSize: '14',
@@ -76,13 +76,14 @@ const menu = [
   { id: 6, label: 'Termos e condições', path: '/terms', icon: GavelIcon },
 ];
 
-function NavBar({ toggleDrawerNav, open }) {
+function MenuButton({ toggleDrawerNav, open }) {
   const classes = useStyles();
   const router = useRouter();
   const isSelected = (item) => {
     return router.pathname === item.path;
   };
-  const content = (
+
+  return (
     <Box height="100%" display="flex" flexDirection="column">
       <List>
         {menu.map((item) => {
@@ -118,21 +119,6 @@ function NavBar({ toggleDrawerNav, open }) {
       </List>
     </Box>
   );
-  return (
-    <Hidden mdDown>
-      <Drawer
-        anchor="left"
-        classes={{ paper: classes.desktopDrawer }}
-        open={open}
-        variant="temporary"
-        onClose={toggleDrawerNav(false)}
-        onOpen={toggleDrawerNav(true)}
-        BackdropProps={{ invisible: false }}
-      >
-        {content}
-      </Drawer>
-    </Hidden>
-  );
 }
 
-export default NavBar;
+export default MenuButton;

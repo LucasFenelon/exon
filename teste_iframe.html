@@ -1,0 +1,108 @@
+<iframe width="600" height="340" 
+  src="https://www.youtube.com/embed?listType=playlist&list=UCWKtHaeXVzUscYGcm0hEunw" frameborder="0" allowfullscreen>
+</iframe>
+
+<iframe width="600" height="340" 
+allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+src="https://www.youtube-nocookie.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=user_uploads&list=jovempanesportes&index=1" frameborder="0" allowfullscreen>
+</iframe>
+
+<iframe width="420" height="315"
+src="https://www.youtube-nocookie.com/embed/tgbNymZ7vqY?autoplay=1&mute=1">
+</iframe>
+
+<iframe width="600" height="340" 
+allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+src="https://www.youtube-nocookie.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=user_uploads&list=TNTSportsBR" frameborder="0" allowfullscreen>
+</iframe>
+
+<iframe width="600" height="340" 
+allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+src="http://www.youtube.com/embed/videoseries?list=BRKsEDU&index=1" frameborder="0" allowfullscreen>
+</iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed?listType=user_uploads&amp;list=WarnerBrosPictures" frameborder="0" allowfullscreen></iframe>
+
+<iframe
+  src="https://www.youtube.com/embed?listType=playlist&list=UCBJycsmduvYEL83R_U4JriQ">
+</iframe>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Recent Upload Thing</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        const requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        const loadVideo = (iframe) => {
+            const cid = iframe.getAttribute('cid');
+            const channelURL = encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?channel_id=${cid}`)
+            const reqURL = `https://api.rss2json.com/v1/api.json?rss_url=${channelURL}`;
+            fetch(reqURL, requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    const videoNumber = (iframe.getAttribute('vnum') ? Number(iframe.getAttribute('vnum')) : 0);
+                    const link = result.items[videoNumber].link;
+                    const id = link.substr(link.indexOf("=") + 1);
+                    iframe.setAttribute("src", `https://youtube.com/embed/${id}?controls=0&autoplay=1`);
+                })
+                .catch(error => console.log('error', error));
+        }
+        var iframes = document.getElementsByClassName('latestVideoEmbed');
+        for (var i = 0, len = iframes.length; i < len; i++) {
+            loadVideo(iframes[i]);
+        }
+    </script>
+    <iframe class="latestVideoEmbed" vnum='0' cid="UCBJycsmduvYEL83R_U4JriQ" width="600" height="340" frameborder="0" allowfullscreen></iframe>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+    var channelID = "UUlbIlkP6078-DapTSPwYy7Q";
+    var reqURL = "https://www.youtube.com/feeds/videos.xml?channel_id=";
+    $.getJSON("https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(reqURL)+channelID, function(data) {
+        var link = data.items[0].link;
+        var id = link.substr(link.indexOf("=")+1);
+        $("#youtube_video").attr("src","https://youtube.com/embed/"+id + "?controls=0&showinfo=0&rel=0");
+    });
+</script>
+<iframe id="youtube_video" width="600" height="340" frameborder="0" allowfullscreen></iframe>
+
+<div>
+    <iframe class="latestVideoEmbed" vnum='0' cid="UCBJycsmduvYEL83R_U4JriQ" width="600" height="340" frameborder="0" allowfullscreen></iframe>
+    <p id="video-title">Lorem ipsum</p>
+    </div>
+    
+    <div>
+    <iframe class="latestVideoEmbed" vnum='1' cid="UC0xXUfNSFQN3qOmf_G_nT5w" width="600" height="340" frameborder="0" allowfullscreen></iframe>
+    <p id="video-title">Lorem ipsum</p>
+</div>
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+    var reqURL = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent("https://www.youtube.com/feeds/videos.xml?channel_id=");
+
+    function loadVideo(iframe) {
+    $.getJSON(reqURL + iframe.getAttribute('cid'),
+        function(data) {
+        var videoNumber = (iframe.getAttribute('vnum') ? Number(iframe.getAttribute('vnum')) : 0);
+        console.log(videoNumber);
+        var link = data.items[videoNumber].link;
+        var title=data.items[videoNumber].title;
+        id = link.substr(link.indexOf("=") + 1);
+        iframe.setAttribute("src", "https://youtube.com/embed/" + id + "?controls=0&autoplay=1");
+        iframe.parentElement.querySelector("#video-title").innerText = title;
+        }
+    );
+    }
+
+    var iframes = document.getElementsByClassName('latestVideoEmbed');
+    for (var i = 0, len = iframes.length; i < len; i++) {
+    loadVideo(iframes[i]);
+    }
+</script>

@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Layout from 'src/components/Layout';
+import ResponsiveLayout from 'src/components/ResponsiveLayout';
 import { styled } from '@mui/material/styles';
 import Router from 'next/router';
 import Card from '@mui/material/Card';
@@ -89,7 +90,7 @@ function Resume() {
   return (
     <div>
       {status ? (
-        <Layout title="Resume">
+        <ResponsiveLayout title="Resume">
           <Box sx={{ flexGrow: 1 }} className={classes.boxGrid}>
             <Card>
               <CardHeader
@@ -98,11 +99,11 @@ function Resume() {
                     R
                   </Avatar>
                 }
-                action={
-                  <IconButton aria-label="settings">
-                    <MoreVertIcon />
-                  </IconButton>
-                }
+                // action={
+                //   <IconButton aria-label="settings">
+                //     <MoreVertIcon />
+                //   </IconButton>
+                // }
                 title="Shrimp and Chorizo Paella"
                 subheader="September 14, 2016"
               />
@@ -120,12 +121,18 @@ function Resume() {
                 </Typography>
               </CardContent>
               <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
+                {/* <IconButton aria-label="add to favorites">
                   <FavoriteIcon />
                 </IconButton>
                 <IconButton aria-label="share">
                   <ShareIcon />
-                </IconButton>
+                </IconButton> */}
+                <Button variant="outlined" startIcon={<FavoriteIcon />}>
+                  Favorite
+                </Button>
+                <Button variant="outlined" startIcon={<ShareIcon />}>
+                  Share
+                </Button>
                 <ExpandMore
                   expand={expanded}
                   onClick={handleExpandClick}
@@ -170,7 +177,7 @@ function Resume() {
               </Collapse>
             </Card>
           </Box>
-        </Layout>
+        </ResponsiveLayout>
       ) : (
         sessionLost
       )}

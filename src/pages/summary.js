@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Layout from 'src/components/Layout';
+import ResponsiveLayout from 'src/components/ResponsiveLayout';
 import { styled } from '@mui/material/styles';
 import Router from 'next/router';
 import Card from '@mui/material/Card';
@@ -184,7 +185,7 @@ function Summary() {
   return (
     <div>
       {status ? (
-        <Layout title="Summary">
+        <ResponsiveLayout title="Summary">
           <Box sx={{ flexGrow: 1 }} className={classes.boxGrid}>
             <Grid
               container
@@ -243,7 +244,7 @@ function Summary() {
               </Grid>
             </Grid>
           </Box>
-        </Layout>
+        </ResponsiveLayout>
       ) : (
         sessionLost
       )}

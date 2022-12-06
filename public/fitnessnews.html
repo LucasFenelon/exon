@@ -1,0 +1,34 @@
+
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    </head>
+    <body style="margin: 0px;">
+        <div>
+            <iframe class="latestVideoEmbed" vnum='1' cid="UCZrvYw-aW36ztpZcCZC-eoQ" width="600" height="340" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <script type="text/javascript">
+            var reqURL = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent("https://www.youtube.com/feeds/videos.xml?channel_id=");
+    
+            function loadVideo(iframe) {
+            $.getJSON(reqURL + iframe.getAttribute('cid'),
+                function(data) {
+                var videoNumber = (iframe.getAttribute('vnum') ? Number(iframe.getAttribute('vnum')) : 0);
+                console.log(videoNumber);
+                var link = data.items[videoNumber].link;
+                var title=data.items[videoNumber].title;
+                id = link.substr(link.indexOf("=") + 1);
+                // iframe.setAttribute("src", "https://youtube.com/embed/" + id + "?controls=0&autoplay=1");
+                iframe.setAttribute("src", "https://youtube.com/embed/" + id + "?&autoplay=1");
+                iframe.parentElement.querySelector("#video-title").innerText = title;
+                }
+            );
+            }
+    
+            var iframes = document.getElementsByClassName('latestVideoEmbed');
+            for (var i = 0, len = iframes.length; i < len; i++) {
+            loadVideo(iframes[i]);
+            }
+        </script>
+    </body>
+</html>
